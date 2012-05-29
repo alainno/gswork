@@ -1,0 +1,5 @@
+header, nav, article, footer, section, article, aside, hgroup {display: block;}
+
+.curva{background: #fff; behavior:url(PIE.htc);}
+.curva-inf{ behavior:url(PIE.htc); border-radius:0 0 4px 4px; position:relative;}
+.curva-sup{ behavior:url(PIE.htc); border-radius:4px 4px 0 0; position:relative;}
