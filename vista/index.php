@@ -33,9 +33,6 @@
 				<h1>Hola Mundo!</h1>
 			</header>
 			<div class="cuerpo">
-				<?
-					
-				?>
 				<blockquote class="cita">hola mundo</blockquote>
 				<ul class="lista">
 					<li>item 1</li>
