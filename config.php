@@ -5,6 +5,7 @@ require('inc/class.evaluaFormulario.php');
 require('inc/framework.php');
 
 // localizacion peru
+
 setlocale(LC_ALL, 'es_PE');
 
 // controlador por defecto
