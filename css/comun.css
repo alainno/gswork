@@ -90,24 +90,19 @@ ol.lista{list-style: decimal}
 /* formularios */
 button::-moz-focus-inner
 ,input::-moz-focus-inner{border: 0;padding: 0;}
-/*
-form label{display: block;margin-bottom: 5px}
-form span{}
-input, textarea, select{display: inline-block;margin-bottom: 9px}
-
-/*
-form td
-,form th{color: #000;font-size: 1.2em;padding: 4px;}
-form th{font-weight: bold;}
-form label{float: left;line-height: 24px;}
-input{border: 1px solid #5c86bf;height: 24px;line-height: 24px;padding: 0 4px;}
-select{border: 1px solid #5c86bf;height: 26px;padding: 3px;margin: 0;}
-textarea{border: 1px solid #5c86bf;padding:4px;}
-input:focus
-,textarea:focus
-,select:focus{background: #FFFF88;}
-button{border: 0;cursor: pointer;margin: 0;overflow: visible;padding: 0;}
-*/
+label,input,button,select,textarea{font-size: 12px;font-weight: normal;line-height: 18px}
+form{margin-bottom: 18px}
+form td,form th{padding: 4px 9px;vertical-align: top}
+form th{text-align: right}
+form label{display: block;font-size: 1.2em;margin:4px 0 4px}
+select,input,textarea,button{color: #555;display: inline-block;font:12px Arial, Helvetica, sans-serif;height: 20px;line-height: 20px;margin-bottom: 8px}
+select,input,textarea{-moz-border-radius: 2px;-webkit-border-radius: 2px;-moz-box-shadow:0 0 0 2px #E3E3E3;-webkit-box-shadow:0 0 0 2px #E3E3E3;box-shadow:0 0 0 2px #E3E3E3;border-radius: 2px;border:1px solid #B4B4B4;padding: 2px;width: 210px}
+input,textarea{padding: 2px 4px}
+input:focus,textarea:focus{-moz-box-shadow:0 0 4px 2px #C8D5E9;-webkit-box-shadow:0 0 4px 2px #C8D5E9;box-shadow:0 0 4px 2px #C8D5E9}
+select{height: 26px;line-height: 26px}
+.w-mini{width: 30px}
+.w-small{width: 70px}
+.w-medium{width: 120px}
 
 /******************************************************************
 * Estilo de usuario: A partir de aqui puedes agregar tus estilos. *

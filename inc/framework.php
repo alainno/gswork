@@ -133,15 +133,16 @@ class framework
 		return './';
 	}
 	
-	function verPagina($p)
+	function verPagina($p, $idioma='')
 	{
-		$ruta = "vista/$p.php";
+		$ruta = empty($idioma) ? "vista/$p.php" : "vista/$idioma/$p.php";
 
 		if(!file_exists("$ruta")){
 			$this->pagina404("La página: $p no existe");
 		}
 		
 		$this->pagina_actual = $p;
+        $this->idioma = $idioma;
 		include("$ruta");
 	}
 	
@@ -151,12 +152,21 @@ class framework
 		exit(0);
 	}
 
-	function enlacePagina($pagina)
+	function enlacePagina($pagina, $idioma='')
 	{
-		return $this->enlace('c=pagina&m=ver&p='.$pagina);
+		if(!empty($idioma)){
+			$var_idioma = '&idioma='.$idioma;
+		}
+		else if(!empty($this->idioma)){
+			$var_idioma = '&idioma='.$this->idioma;
+		}
+		else{
+			$var_idioma = '';
+		}
+		return $this->enlace('c=pagina&m=ver&p='.$pagina.$var_idioma);
 	}
 	
-	function actualSiEsPagina($nombre, $clase='actual')
+	function actualSiEsPagina($nombre, $clase='actual', $er=false)
 	{
 		$nombres = explode(',', $nombre);
 		if(($er && preg_match($nombre, $this->pagina_actual)) || (is_array($nombres) && in_array($this->pagina_actual, $nombres)) || $this->pagina_actual == $nombre){
