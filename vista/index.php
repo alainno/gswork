@@ -21,7 +21,8 @@
 		   document.createElement("hgroup"); 
 		</script>
 		<![endif]-->
-		<script type="text/javascript" src="<?=DIR_JS?>/jquery.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="<?=DIR_JS?>/jquery-1.7.2.min.js"><\/script>')</script>
 		<script type="text/javascript" src="<?=DIR_JS?>/plugins.js"></script>
 		<script type="text/javascript" src="<?=DIR_JS?>/global.js"></script>
 		<? $this->masScripts(); ?>
