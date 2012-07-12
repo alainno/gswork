@@ -20,6 +20,11 @@ class pagina extends framework
 
 		include("$ruta");
 	}
+	
+	function home()
+	{
+		include 'vista/index.php';
+	}
 
 }
 

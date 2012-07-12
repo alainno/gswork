@@ -9,7 +9,7 @@ setlocale(LC_ALL, 'es_PE');
 
 // controlador por defecto
 define('DEF_CLASE', 'pagina');
-define('DEF_METODO', 'ver');
+define('DEF_METODO', 'home');
 
 // metatags por defecto
 define('META_TITULO', 'Framework v1.0');
