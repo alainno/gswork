@@ -10,6 +10,8 @@ class framework
 {
 	public		$meta_titulo = META_TITULO;
 	public		$meta_descripcion = META_DESCRIPCION;
+	private		$bloques = array();
+	private		$bloques_nombres = array();
 	private		$estilos = array();
 	private		$scripts = array();
 	//protected	$db;
@@ -68,14 +70,19 @@ class framework
 		}
 	}
 
-	function enlace($variables)
+	function enlace($variables,$encode=true)
 	{
 		if(ENLACES == 'C'){
 			parse_str($variables, $vector);
 			return '/' . implode('/', $vector);
 			
 		}
-		return '?'.htmlentities($variables);
+		return '?'.(($encode)?htmlentities($variables):$variables);
+	}
+	
+	function href($variables, $codificar=true)
+	{
+		return $this->enlace('c=vista&'.$variables, $codificar);
 	}
 	
 	function resumen($texto, $limite=35, $puntos='...')
@@ -146,7 +153,7 @@ class framework
 		include("$ruta");
 	}
 	
-	function pagina404($mensaje='')
+	function pagina404($mensaje='',$redireccion='')
 	{
 		include('vista/404.php');
 		exit(0);
@@ -181,12 +188,89 @@ class framework
 		}
 	}
 	
-	function actualSiEsMetodo($nombre, $args=array(), $clase='actual')
+	function actualSiEsMetodo($nombre, $args=array(), $clase='actual',$clase_default='')
 	{
 		$comp = array_diff($args, array_slice($_GET, 2));
 		if($GLOBALS['metodo'] == $nombre && empty($comp)){
 			echo 'class="'.$clase.'"';
 		}
+		else{
+			echo 'class="'.$clase_default.'"';
+	}
+	}
+	
+	function actualSiEs($er, $class_si='actual', $class_no='')
+	{
+		
+		if(!empty($_GET)){
+			$str = array();
+			foreach($_GET as $key=>$val){
+				$str[] = "$key=$val";
+			}
+			$str = implode('&',$str);
+		}
+		else{
+			$str = '';
+		}
+		
+//		echo "ER: $er<br />";
+//		echo "STR: $str<br />";
+//		print_r($_GET);
+			
+		if(!preg_match($er,$str)){
+			echo empty($class_no) ? '':'class="'.$class_no.'"';
+			return false;
+		}
+		else{
+			echo 'class="'.$class_si.'"';
+			return true;			
+		}
+		
+		
+		//$querys = explode(',',$querys);
+		
+		
+		
+//		foreach($querys as $query){
+//			$vars = array();
+//			parse_str($query, $vars);
+//			$diff = array_diff_assoc($vars, $_GET);
+//			$diff = array_intersect_assoc($vars, $_GET);
+//			
+//			echo 'QUERY: '.$query.'<br/>';
+//			print_r($vars);
+//			print_r($_GET);
+//			print_r($diff);
+//			echo '<br />';
+//			
+//			if(!empty($diff)){
+//				echo 'class="'.$class_si.'"';
+//				return true;
+//			}
+//		}
+//		
+//		echo empty($class_no) ? '':'class="'.$class_no.'"';
+//		return false;
+		
+		
+//		$vars = array();
+//		parse_str($url_query, $vars);
+//		
+//		$diff = array_diff($vars, array_slice($_GET,2));
+//		
+//		print_r($_GET);
+//		print_r($vars);
+//		print_r($diff);
+//		die();
+//		
+//		if($GLOBALS['clase']!=$vars['c'] || $GLOBALS['metodo']!=$vars['m'] || empty($diff)){
+//			echo 'class="'.$class_no.'"';
+//		}
+//		else{
+//			print_r($diff);
+//			die();
+//			echo 'class="'.$class_si.'"';
+//		}
 	}
 	
 	// crear parrafos a partir de saltos de linea
@@ -301,5 +385,30 @@ class framework
 		return $nombre;
 	}
 	
+	function abrirBloque($nombre)
+	{
+		array_push($this->bloques_nombres,"$nombre");
+		ob_start();
+}
+	
+	function cerrarBloque()
+	{
+		$nombre = array_pop($this->bloques_nombres);
+		$this->bloques["$nombre"] = ob_get_clean();
+	}
+	
+	function bloque($nombre)
+	{
+		echo $this->bloques["$nombre"];
+	}
+	
+	function die_json_encode($array_vars)
+	{
+		$json = new stdClass();
+		foreach($array_vars as $key => $value){
+			$json->{"$key"} = $value;
+		}
+		die(json_encode($json));
+	}
 }
 ?>

@@ -1,11 +1,10 @@
 <?
 
-require('inc/clase-mysql.php');
+require('inc/clase-mysqli.php');
 require('inc/class.evaluaFormulario.php');
 require('inc/framework.php');
 
 // localizacion peru
-
 setlocale(LC_ALL, 'es_PE');
 
 // controlador por defecto
@@ -20,10 +19,20 @@ define('META_DESCRIPCION', '');
 define('ENLACES', 'V'); 
 
 // Carpetas por defecto
-define('DIR_CSS', 'css');
-define('DIR_JS', 'js');
-define('DIR_IMG', 'img');
-define('DIR_MULTIMEDIA', 'multimedia');
+if(ENLACES == 'V'){
+	define('DIR_CSS', 'css');
+	define('DIR_JS', 'js');
+	define('DIR_IMG', 'img');
+	define('DIR_MEDIA', 'media');
+	define('DIR_STATIC', '');
+}
+elseif(ENLACES == 'C'){
+	define('DIR_CSS', '/css');
+	define('DIR_JS', '/js');
+	define('DIR_IMG', '/img');
+	define('DIR_MEDIA', '/media');
+	define('DIR_STATIC', '/');
+}
 
 // Datos de acceso a la base de datos
 define('DB_HOST', 'localhost');

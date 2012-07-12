@@ -9,6 +9,7 @@
 		<link rel="alternate" type="application/rss+xml" href="" title="" />
 		<style type="text/css">@import "<?=DIR_CSS?>/comun.css";</style>
 		<? $this->masEstilos(); ?>
+		<?=$this->bloque('estilos')?>
 		<!--[if lt IE 9]>
 		<style type="text/css">@import "<?=DIR_CSS?>/ie.css";</style>
 		<script type="text/javascript">
@@ -26,6 +27,7 @@
 		<script type="text/javascript" src="<?=DIR_JS?>/plugins.js"></script>
 		<script type="text/javascript" src="<?=DIR_JS?>/global.js"></script>
 		<? $this->masScripts(); ?>
+		<?= $this->bloque('scripts'); ?>
 	</head>
 
 	<body>

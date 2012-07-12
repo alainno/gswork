@@ -1,3 +1,23 @@
+// tabs
+(function($){
+	$.fn.tabs = function(callback){
+		var $tab_nuevo = $(this);
+		
+		var $tab_actual = $(this).parents('ul').find('a.actual');
+		
+		if($tab_actual != $tab_nuevo){
+			$($tab_actual.attr('href')).hide();
+			$tab_actual.removeClass('actual');
+			$($tab_nuevo.attr('href')).show();
+			$tab_nuevo.addClass('actual');
+			
+			if(typeof callback != 'undefined'){
+				callback.call(this);
+			}
+		}
+	}
+})(jQuery);
+
 // alerta de errores ajax
 $.ajaxSetup({error:function(x,e){
 	alert(x.responseText);
@@ -38,6 +58,42 @@ function getSWF(filename, width, height, flashvars, params, attributes)
 // plugin para manipular el envio de formularios, requiere jquery
 /* formularios */
 (function($){
+	//
+	var disablings = new Array();
+	
+	// version 2: llamar dentro de submit
+	$.fn.enviar = function(args, callback)
+	{	
+		$.post($(this).attr('action'), args + '&ajax=1', function(data){callback.call(this,data)}, 'json');
+		//return false;
+	}
+	
+	$.fn.args = function()
+	{
+		return $(this).serialize().replace('%5B%5D', '[]');
+	}
+	
+	$.fn.difTarget = function()
+	{
+		var target = $(this).attr('target');
+		if(target != '' && target != '_self' && typeof target != 'undefined'){
+			return true;
+		}
+		//return false;
+	}
+	
+	$.fn.lock = function()
+	{
+		$(this).disable();
+		$(this).bloquear();
+	}
+	
+	$.fn.unlock = function()
+	{
+		$(this).enable();
+		$(this).desbloquear();
+	}
+	
 	$.fn.postForm = function(antes, respuesta)
 	{
 		$(this).submit(function(){
@@ -83,3 +139,56 @@ function getSWF(filename, width, height, flashvars, params, attributes)
 	} // end enable
 	
 })(jQuery);
+
+// upload media
+(function($){
+	
+	//var $input_file = null;
+	
+	$.fn.startUpload = function(){
+		var $este = $(this);
+		var $form = $este.parents('form');
+		var $loader = $(document.createElement('div'));
+		$loader.addClass('loader').css({'position':'absolute','left':'0','top':'0','right':'0','bottom':'0','background':'#fff url(img/loader.gif) no-repeat center','opacity':'0.75'})
+		
+		$este.hide();
+		$('#' + $este.attr('id') + '-container').css('position','relative').append($loader);
+
+		var old_action = $form.attr('action');
+		var old_target = $form.attr('target') || '';
+
+		$form.attr('action', $este.attr('rel'));
+		$form.attr('target', 'frame_upload');
+
+		$form.submit();
+
+		//console.log(old_target);
+
+		$form.attr('action', old_action);
+		$form.attr('target', old_target);	
+	}
+	
+	$.fn.stopUpload = function(out){
+		var $este = $(this);
+		var id_input_file = $este.attr('id');
+		eval('json='+out);
+		if (json.exito == 1){
+			$('#' + id_input_file + '-container').html(json.html);
+			$('#'+id_input_file+'-borrar').show();
+			$('#'+id_input_file+'-tmp').val(json.path);
+		}
+		else{
+			alert(json.mensaje);
+			$(this).show();
+		}
+		
+		$('#'+id_input_file+'-container').children('div.loader').remove();
+		$este.val('');
+		return true;   
+	}
+})(jQuery);
+
+function extStopUpload(id, json)
+{
+	$('#' + id).stopUpload(json);
+}
