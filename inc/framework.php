@@ -410,5 +410,41 @@ class framework
 		}
 		die(json_encode($json));
 	}
+	
+//	protected function cargarModelo($nombre){
+//		require_once 'modelos/$nombre.php';
+//		return new $nombre();
+//	}
+	
+	function nav_pag($pre_enlace,$nro_paginas,$pag_actual)
+	{	
+		$html = '
+		<input type="button" value=" &larr; " '.($pag_actual>1?'':'disabled').' onclick="document.location = \''.$pre_enlace.($pag_actual-1).'\'" class="boton left" />
+        <select onchange="document.location = \''.$pre_enlace.'\'+this.value" class="left ml5">';
+		for($i=0;$i<$nro_paginas;$i++){
+			$html .= '<option value="'.($i+1).'" '.($pag_actual==($i+1)?'selected':'').'>&nbsp;&nbsp;&nbsp;&nbsp;'.($i+1).' / '.$nro_paginas.'&nbsp;&nbsp;</option>';
+		}
+		$html .= '
+		</select>
+		<input type="button" value=" &rarr; " '.($nro_paginas>$pag_actual?'':'disabled').' onclick="document.location = \''.$pre_enlace.($pag_actual+1).'\'" class="boton left ml5" />';	
+		
+		return $html;
+	}
+
+	function input_imagen($atributos=array())
+	{
+		extract($atributos);
+		?>
+		<div id="<?=$id?>-container" class="media" style="width: <?=$w?>px;height: <?=$h?>px"><?=$html?></div>
+		<span class="input-file-falso<?=empty($value)?'':' oculto'?>"><span class="ico-left ico-folder"></span>Seleccionar...</span>
+		<input type="file" name="<?=$id?>" id="<?=$id?>" rel="<?=$rel?>" class="input-file-oculto" />
+		<a href="#" id="<?=$id?>-borrar" class="borrar-media<?=empty($value)?' oculto':''?>"><span class="ico-left ico-borrar"></span>Eliminar...</a>
+		<input type="hidden" name="<?=$id?>_tmp" id="<?=$id?>_tmp" />
+		<input type="hidden" name="<?=$id?>_actual" id="<?=$id?>_actual" value="<?=$value?>" />
+		<input type="hidden" name="id_input_file" id="id_input_file" value="<?=$id?>" />
+		<iframe id="frame_upload" name="frame_upload" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
+		<?
+	}
+	
 }
 ?>
