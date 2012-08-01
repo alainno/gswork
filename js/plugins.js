@@ -61,82 +61,71 @@ function getSWF(filename, width, height, flashvars, params, attributes)
 	//
 	var disablings = new Array();
 	
-	// version 2: llamar dentro de submit
-	$.fn.enviar = function(args, callback)
-	{	
-		$.post($(this).attr('action'), args + '&ajax=1', function(data){callback.call(this,data)}, 'json');
-		//return false;
-	}
-	
-	$.fn.args = function()
-	{
-		return $(this).serialize().replace('%5B%5D', '[]');
-	}
-	
-	$.fn.difTarget = function()
-	{
+	var methods = {
+		enviar:function(options){
+			options = options || {};
+			//return this.each(function(){
 		var target = $(this).attr('target');
 		if(target != '' && target != '_self' && typeof target != 'undefined'){
 			return true;
 		}
-		//return false;
+				//console.log('no paso target adentro:' + target);
+				var args = $(this).serialize().replace('%5B%5D', '[]');
+				if(options['antes']) options['antes'].call(this);
+				$.post($(this).attr('action'), args + '&ajax=1', function(data){if(options['despues'])options['despues'].call(this,data);}, 'json');
+				return false;
+			//});
+		},
+//		bloquear : function(){
+//			return this.each(function(){
+//				var $capa = $(document.createElement('div'));
+//				$capa.addClass('capa cargando').css({
+//					'position':'absolute',
+//					'left':'0',
+//					'top':'0',
+//					'right':'0',
+//					'bottom':'0',
+//					'background':'#fff url(img/loader.png) no-repeat center',
+//					'opacity':'0.75'
+//				});
+//				this.css('position','relative').append($capa);
+//			});
+//		},
+//		desbloquear : function(){
+//			return this.each(function(){
+//				this.children('div.capa').remove();
+//			});
+//		},
+		disable : function(){
+			return this.each(function(){
+				var form = $(this)[0];
+				for(i = 0; i < form.elements.length; i++){
+					disablings[i] = form.elements[i].disabled;
+					form.elements[i].disabled = true;
 	}
-	
-	$.fn.lock = function()
-	{
-		$(this).disable();
-		$(this).bloquear();
+			});
+		},
+		enable : function(){
+			return this.each(function(){
+				var form = $(this)[0];
+				for(i = 0; i < form.elements.length; i++){
+					form.elements[i].disabled = disablings[i];
 	}
-	
-	$.fn.unlock = function()
-	{
-		$(this).enable();
-		$(this).desbloquear();
-	}
-	
-	$.fn.postForm = function(antes, respuesta)
-	{
-		$(this).submit(function(){
-			var $form = $(this);
-			var target = $form.attr('target');
-			if(target != '' && target != '_self'/* && typeof target != 'undefined'*/){
-				return true;
-			}
-			
-			var args = $form.serialize().replace('%5B%5D', '[]');
-			antes();
-			$.post($form.attr('action'), args + '&ajax=1', function(data){respuesta(data);}, 'json');
-			return false;
 		});
 	}
 
-	$.fn.bloquear = function(){
-		var $capa = $(document.createElement('div'));
-		$capa.addClass('capa cargando').css({'position':'absolute','left':'0','top':'0','right':'0','bottom':'0','background':'#fff url(img/loader.png) no-repeat center','opacity':'0.75'});
-		$(this).css('position','relative').append($capa);
 	}
 
-	$.fn.desbloquear = function(){
-		$(this).children('div.capa').remove();
+	$.fn.jform = function( method ) {
+		// Method calling logic
+		if ( methods[method] ) {
+			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return methods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not exist on jQuery.formulario' );
 	}
-	
-	//
-	var disablings = new Array();
-	
-	$.fn.disable = function(){
-		var form = document.getElementById($(this).attr('id'));
-		for(i = 0; i < form.elements.length; i++){
-			disablings[i] = form.elements[i].disabled;
-			form.elements[i].disabled = true;
 		}
-	} // end disable
-	
-	$.fn.enable = function(){
-		var form = document.getElementById($(this).attr('id'));
-		for(i = 0; i < form.elements.length; i++){
-			form.elements[i].disabled = disablings[i];
-		}
-	} // end enable
 	
 })(jQuery);
 
@@ -148,11 +137,8 @@ function getSWF(filename, width, height, flashvars, params, attributes)
 	$.fn.startUpload = function(){
 		var $este = $(this);
 		var $form = $este.parents('form');
-		var $loader = $(document.createElement('div'));
-		$loader.addClass('loader').css({'position':'absolute','left':'0','top':'0','right':'0','bottom':'0','background':'#fff url(img/loader.gif) no-repeat center','opacity':'0.75'})
 		
-		$este.hide();
-		$('#' + $este.attr('id') + '-container').css('position','relative').append($loader);
+		$('#' + $este.attr('id') + '-container').ajaxui('bloquear');		
 
 		var old_action = $form.attr('action');
 		var old_target = $form.attr('target') || '';
@@ -162,27 +148,28 @@ function getSWF(filename, width, height, flashvars, params, attributes)
 
 		$form.submit();
 
-		//console.log(old_target);
-
 		$form.attr('action', old_action);
 		$form.attr('target', old_target);	
 	}
 	
 	$.fn.stopUpload = function(out){
+		console.log('se inicio stop upload...');
 		var $este = $(this);
 		var id_input_file = $este.attr('id');
 		eval('json='+out);
 		if (json.exito == 1){
 			$('#' + id_input_file + '-container').html(json.html);
 			$('#'+id_input_file+'-borrar').show();
-			$('#'+id_input_file+'-tmp').val(json.path);
+			$('#'+id_input_file+'_tmp').val(json.path);
+			$este.parent('div').prev('.input-file-falso').hide();
 		}
 		else{
 			alert(json.mensaje);
-			$(this).show();
+			//$este.parent('div').prev('.input-file-falso').show();
 		}
 		
-		$('#'+id_input_file+'-container').children('div.loader').remove();
+		//$('#'+id_input_file+'-container').children('div.loader').remove();
+		$('#' + $este.attr('id') + '-container').ajaxui('desbloquear');
 		$este.val('');
 		return true;   
 	}
@@ -192,3 +179,78 @@ function extStopUpload(id, json)
 {
 	$('#' + id).stopUpload(json);
 }
+
+// AJAX UI
+(function($){
+	var $loader = null;
+	
+	var methods = {
+		crear:function(){
+			$loader = $(document.createElement('div'));
+			//return this.each(function(){
+				$loader.attr('id', 'divLI').text('Ejecutando...').css({
+					'position':'fixed',
+					'display':'none',
+					'z-index':'9999',
+					'padding':'5px 15px',
+					'background':'#D01F3C',
+					'color':'#FFF',
+					'font':'bold 12px Verdana, Arial, Helvetica, sans-serif',
+					'left':'50%',
+					'left': ($(window).width() - 138)/2 + 'px', 
+					'top':0
+				});
+				$(window).resize(function(){
+					$loader.css({
+						'left': ($(window).width() - 138)/2 + 'px'
+					});
+				});
+				$('body').append($loader);
+			//});
+		},
+		mostrar:function(){
+			if($loader == null) methods.crear.call(this);
+			//alert('hola');
+			//console.log();
+			//return this.each(function(){
+				$loader.show();
+			//});
+		},
+		ocultar:function(){
+			//return this.each(function(){
+				$loader.hide();
+			//});
+		},
+		bloquear:function(){
+			return this.each(function(){
+				var $capa = $(document.createElement('div'));
+				$capa.addClass('cargando').css({
+					'position':'absolute',
+					'left':'0',
+					'top':'0',
+					'right':'0',
+					'bottom':'0',
+					'background':'#fff url(img/loader.gif) no-repeat center',
+					'opacity':'0.75'
+				});
+				$(this).css('position','relative').append($capa);
+			});
+		},
+		desbloquear:function(){
+			return this.each(function(){
+				$(this).children('div.cargando').remove();
+			});
+		}
+	}
+	
+	$.fn.ajaxui = $.ajaxui = function(method){
+		// Method calling logic
+		if ( methods[method] ) {
+			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		} else if ( typeof method === 'object' || ! method ) {
+			return methods.init.apply( this, arguments );
+		} else {
+			$.error( 'Method ' +  method + ' does not exist on jQuery.ajaxui' );
+		}
+	}
+})(jQuery);
