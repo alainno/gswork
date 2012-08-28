@@ -14,7 +14,10 @@ class framework
 	private		$bloques_nombres = array();
 	private		$estilos = array();
 	private		$scripts = array();
-	//protected	$db;
+	/* @var mysql */
+	protected	$db;
+	/* @var ClassEvaluaFormulario */
+	protected	$eval;
 	protected	$pagina_actual;
 	protected	$idioma;
 	protected	$clase;
@@ -434,6 +437,8 @@ class framework
 	function input_imagen($atributos=array())
 	{
 		extract($atributos);
+		$w = empty($w) ? 75 : $w;
+		$h = empty($h) ? 75 : $h;
 		?>
 		<div id="<?=$id?>-container" class="media" style="width: <?=$w?>px;height: <?=$h?>px"><?=$html?></div>
 		<span class="input-file-falso<?=empty($value)?'':' oculto'?>"><span class="ico-left ico-folder"></span>Seleccionar...</span>
@@ -443,8 +448,21 @@ class framework
 		<input type="hidden" name="<?=$id?>_actual" id="<?=$id?>_actual" value="<?=$value?>" />
 		<input type="hidden" name="id_input_file" id="id_input_file" value="<?=$id?>" />
 		<iframe id="frame_upload" name="frame_upload" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe>
+		<input type="hidden" name="w" value="<?=$w?>" />
+		<input type="hidden" name="h" value="<?=$h?>" />
 		<?
 	}
 	
-}
+	
+	function hexentities($str)
+	{
+		$return = '';
+		for ($i = 0; $i < strlen($str); $i++) {
+			$return .= '&#x' . bin2hex(substr($str, $i, 1)) . ';';
+		}
+		return $return;
+	}
+	
+} // fin de la clase
+
 ?>

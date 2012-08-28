@@ -254,3 +254,42 @@ function extStopUpload(id, json)
 		}
 	}
 })(jQuery);
+
+
+	// input file false
+function inputFileImage()
+{
+	var wrapper = $('<div/>').css({
+		height:0,
+		width:0,
+		'overflow':'hidden'
+	});
+	var fileInput = $('input.input-file-oculto').wrap(wrapper);
+
+	$('.input-file-falso').click(function(){
+		fileInput.click();
+	});
+	
+	// upload file
+	fileInput.change(function(){
+		//console.log('ID before:' + $(this));
+		$(this).startUpload();
+	});
+	
+	$('a.borrar-media').click(function(e){
+		e.preventDefault();
+		var $this = $(this);
+		if(!confirm('¿Desea eliminar el archivo?')){
+			return;
+		}
+		else{
+			$this.siblings('.media').html('');
+			$this.hide();
+			$this.siblings('.input-file-falso').show();
+			var id = $this.siblings('#id_input_file').val();
+			console.log('el id: ' + id);
+			$('#' + id + '_tmp').val('');
+			$('#' + id + '_actual').val('');
+		}
+	});
+}

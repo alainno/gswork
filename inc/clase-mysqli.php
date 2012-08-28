@@ -585,6 +585,18 @@ class mysql {
 		}
 	}
 	
+	function get_array($tabla, $where)
+	{
+		//$tabla = get_class($this);
+		$res = $this->Query("SELECT * FROM $tabla WHERE $where LIMIT 1", true);
+		if($res->num_rows() <= 0){
+			return false;
+		}
+		else{
+			return $res->fetch_array();
+		}
+	}
+	
 	function objects($tabla,$where='')
 	{
 		$sql = "SELECT

@@ -145,5 +145,27 @@ class ClassEvaluaFormulario {
 		}
 		return false;
 	}
+	
+	function lanzarError($mensaje, $control='')
+	{
+		$json = new stdClass();
+		$json->error = true;
+		$json->mensaje = $mensaje;
+		if(!empty($control)){
+			$json->control = $control;
+}
+		die(json_encode($json));
+	}
+	
+	function lanzarExito($mensaje, $redireccion='')
+	{
+		$json = new stdClass();
+		$json->error = false;
+		$json->mensaje = $mensaje;
+		if(!empty($redireccion)){
+			$json->redireccion = $redireccion;
+		}
+		die(json_encode($json));
+	}
 }
 ?>

@@ -3,6 +3,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Error 404</title>
+		<? if(!empty($redireccion)): ?>
+		<meta http-equiv="refresh" content="2;url=<?=$redireccion?>">
+		<? endif; ?>
 		<style type="text/css">
 			h1,p{margin: 0;padding: 0;}
 			body{background: #a1cc4d;font-family: Tahoma, Geneva, sans-serif;}
