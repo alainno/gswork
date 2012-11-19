@@ -102,6 +102,21 @@ class ClassEvaluaFormulario {
 		  else	return true;
 	}
 	
+	/* es fecha con formato dd/mm/yyyy */
+	function EsFechaD($fecha)
+	{
+		if($this->EsVacio($fecha))return false;
+			
+		$arr = array();
+		  preg_match('/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/',$fecha,$arr);
+		  $d = $arr[1];
+		  $m = $arr[2];
+		  $y = $arr[3];
+		  if(!($year = @date("Y", mktime (0,0,0,$m,$d,$y)))) return false;
+		  if ($y != $year)	return false;
+		  else	return true;
+	}
+	
 	function MostrarMensajes(){
 		if($this->EsError()){
 			header("mensaje: mensaje");
@@ -166,6 +181,19 @@ class ClassEvaluaFormulario {
 			$json->redireccion = $redireccion;
 		}
 		die(json_encode($json));
+	}
+	
+	function EsSpam($txt) {
+
+		$txt = strtolower($txt);
+		$spamWords = array('[/url]', 'groseria', 'inmoral', 'mediocrida', 'lammer', 'spam', 'ugly');
+
+		$spamCount = 0;
+		foreach ($spamWords as $spamWord) {
+			$spamCount = $spamCount + substr_count($txt, $spamWord);
+		}
+
+		return $spamCount > 10 ? true : false;
 	}
 }
 ?>

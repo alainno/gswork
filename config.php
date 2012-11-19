@@ -2,7 +2,7 @@
 
 require('inc/clase-mysqli.php');
 require('inc/class.evaluaFormulario.php');
-require('inc/framework.php');
+require('inc/class.gswork.php');
 
 // localizacion peru
 setlocale(LC_ALL, 'es_PE');

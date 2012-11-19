@@ -1,13 +1,13 @@
 <?php
 
-class pagina extends framework
+class pagina extends GSWork
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
 
-	function ver($pagina = 'index', $idioma='')
+	function ver($pagina = 'home', $idioma='')
 	{
 		$ruta = empty($idioma) ? "vista/$pagina.php" : "vista/$idioma/$pagina.php";
 
@@ -23,7 +23,7 @@ class pagina extends framework
 	
 	function home()
 	{
-		include 'vista/index.php';
+		include 'vista/home.php';
 	}
 
 }

@@ -1,12 +1,13 @@
 <?php
 /** 
 *
-* @Clase Framework "framework.php"
+* @Clase GSWork "class.gswork.php"
 * @versión: 1.0.0	@modificado: 23/05/2012
 * @autor: Alain - alain@gruposistemas.com
 *
 */
-class framework
+
+class GSWork
 {
 	public		$meta_titulo = META_TITULO;
 	public		$meta_descripcion = META_DESCRIPCION;
@@ -14,9 +15,13 @@ class framework
 	private		$bloques_nombres = array();
 	private		$estilos = array();
 	private		$scripts = array();
-	/* @var mysql */
+	/**
+	* @var mysql
+	**/
 	protected	$db;
-	/* @var ClassEvaluaFormulario */
+	/**
+	* @var ClassEvaluaFormulario
+	**/
 	protected	$eval;
 	protected	$pagina_actual;
 	protected	$idioma;
@@ -463,6 +468,49 @@ class framework
 		return $return;
 	}
 	
-} // fin de la clase
+	function email($nombres, $email, $to, $subject, $body)
+	{
+		$headers = 'MIME-Version: 1.0'.PHP_EOL;
+		$headers .= 'Content-type: text/html; charset=UTF-8'.PHP_EOL;
+		$headers .= "From: $nombres <$email>".PHP_EOL;
+		$headers .= "Reply-To: $email".PHP_EOL;
+		$headers .= "X-Mailer: PHP/" . phpversion();
+		if(!@mail($to, $subject, $body, $headers)){
+			return false;
+		}
+		return true;
+	}
+	
+//	function &loadlib($nombre){
+//		require 'inc/class.'.$nombre.'.php';
+//		$obj = new $nombre();
+//		return $obj;
+//	}
+	
+//	function &load($nombre){
+//		require 'inc/class.'.$nombre.'.php';
+//		//return call_user_func(array($nombre, 'getInstance'));
+//		$obj = new $nombre();
+//		return $obj;
+//	}
+//	
+//	function __autoload($classname){
+//		require 'inc/class.'.$classname.'.php';
+//	}
+	
+	
+} // fin de GSWork
+
+
+// cargar clases sin include
+function __autoload($classname){
+	$path1 = "inc/class.$classname.php";
+	$path2 = "modelo/$classname.php";
+	if(file_exists($path1)){
+		require $path1;
+	}elseif(file_exists($path2)){
+		require $path2;
+	}
+}
 
 ?>

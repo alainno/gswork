@@ -1,6 +1,6 @@
 // tabs
 (function($){
-	$.fn.tabs = function(callback){
+	$.fn.tab = function(callback){
 		var $tab_nuevo = $(this);
 		
 		var $tab_actual = $(this).parents('ul').find('a.actual');
@@ -116,7 +116,7 @@ function getSWF(filename, width, height, flashvars, params, attributes)
 
 	}
 
-	$.fn.jform = function( method ) {
+	$.fn.jsForm = function( method ) {
 		// Method calling logic
 		if ( methods[method] ) {
 			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
