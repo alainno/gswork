@@ -168,7 +168,7 @@ class ClassEvaluaFormulario {
 		$json->mensaje = $mensaje;
 		if(!empty($control)){
 			$json->control = $control;
-}
+		}
 		die(json_encode($json));
 	}
 	
