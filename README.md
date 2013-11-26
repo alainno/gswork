@@ -1,4 +1,4 @@
-gswork
+GSWork
 ======
 
 PHP, MySQL, HTML/CSS Framework
