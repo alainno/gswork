@@ -1,6 +1,6 @@
 <?php
 
-require('inc/clase-mysqli.php');
+require('inc/class.mysqli.php');
 require('inc/class.evaluaFormulario.php');
 require('inc/class.gswork.php');
 
@@ -24,14 +24,12 @@ if(ENLACES == 'V'){
 	define('DIR_CSS', 'css');
 	define('DIR_JS', 'js');
 	define('DIR_IMG', 'img');
-	define('DIR_MEDIA', 'media');
 	define('DIR_STATIC', '');
 }
 elseif(ENLACES == 'C'){
 	define('DIR_CSS', '/css');
 	define('DIR_JS', '/js');
 	define('DIR_IMG', '/img');
-	define('DIR_MEDIA', '/media');
 	define('DIR_STATIC', '/');
 }
 

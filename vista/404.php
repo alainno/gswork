@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Error 404</title>
 		<?php if(!empty($redireccion)): ?>
-		<meta http-equiv="refresh" content="2;url=<?=$redireccion?>">
+		<meta http-equiv="refresh" content="<?php echo $tiempo; ?>;url=<?php echo $redireccion; ?>">
 		<?php endif; ?>
 		<style type="text/css">
 			h1,p{margin: 0;padding: 0;}

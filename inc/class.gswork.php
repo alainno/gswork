@@ -51,17 +51,25 @@ class GSWork
 			$this->eval = new ClassEvaluaFormulario();
 		}
 	}
-
+	
+	/** Agregar css a la página.
+	 * @param $estilo La URL del css.
+	 */
 	function agregarEstilo($estilo)
 	{
 		array_push($this->estilos, $estilo);
 	}
 
+	/** Agregar archivo de javascript a la página.
+	 * @param $script La URL del archivo js.
+	 */
 	function agregarScript($script)
 	{
 		array_push($this->scripts, $script);
 	}
 
+	/** Imprime los tags de los css agregados.
+	 */
 	function masEstilos()
 	{
 		foreach($this->estilos as $estilo)
@@ -70,6 +78,8 @@ class GSWork
 		}
 	}
 
+	/** Imprime los tags de los js agregados.
+	 */
 	function masScripts()
 	{
 		foreach($this->scripts as $script)
@@ -78,6 +88,11 @@ class GSWork
 		}
 	}
 
+	/** Crear enlace interno.
+	 * @param $variables cadena de variables y valores a=b&c=d&...
+	 * @param $encode codificar el enlace con caracteres html.
+	 * @return url interna.
+	 */
 	function enlace($variables,$encode=true)
 	{
 		if(ENLACES == 'C'){
@@ -88,37 +103,67 @@ class GSWork
 		return '?'.(($encode)?htmlentities($variables):$variables);
 	}
 	
+	/** Crear enlace abreviado para la clase vista.
+	 * @param $variables cadena de variables y valores.
+	 * @param $codificar codificar con caracteres html.
+	 * @return url interna.
+	 */
 	function href($variables, $codificar=true)
 	{
 		return $this->enlace('c=vista&'.$variables, $codificar);
 	}
 	
+	/** Resumir texto.
+	 * @param $texto el texto a resumir.
+	 * @param $limite cantidad de palabras a mostrar.
+	 * @param $puntos agregar puntos y otra cadena al final.
+	 * @return texto resumido.
+	 */
 	function resumen($texto, $limite=35, $puntos='...')
 	{
-		eregi("(([^ ]* ?){0,$limite})(.*)", strip_tags($texto), $ars);
+		//eregi("(([^ ]* ?){0,$limite})(.*)", strip_tags($texto), $ars);
+		preg_match("/(([^ ]* ?){0,$limite})(.*)/i", strip_tags($texto), $ars);
 		return $ars[1] . $puntos;
 	}
 	
+	/** Texto amigable de una fecha anterior.
+	 * @param $time fecha en formato unix.
+	 * @return texto amigable.
+	 */
 	function hace($time)
 	{
-		$lastDate = (time()) - $time;
-
-		if (($lastDate = floor($lastDate / 60)) < 60) {
-			$lastDate .= ( $lastDate == 1) ? ' min.' : ' mins.';
-		} else if (($lastDate = floor($lastDate / 60)) < 24) {
-			$lastDate .= ( $lastDate == 1) ? ' hora' : ' horas';
-		} else {
-			$lastDate = floor($lastDate / 24);
-			$lastDate .= ( $lastDate == 1) ? ' d&iacute;a' : ' d&iacute;as';
+		$delta = time() - $time;
+		if($delta < 24 * HOUR){ return "Hoy"; }
+		if($delta < 48 * HOUR) { return "Ayer"; }
+		if($delta < 30 * DAY) { return "Hace " . floor($delta / DAY) . " dias"; }
+		if($delta < 12 * MONTH)
+		{
+			$months = floor($delta / DAY / 30);
+			return $months <= 1 ? "El mes pasado" : "hace " . $months . " meses";
 		}
-		return 'hace ' . $lastDate;
+		else
+		{
+			$years = floor($delta / DAY / 365);
+			return $years <= 1 ? "El a&ntilde;o pasado" : "hace " . $years . " a&ntilde;os";
+		}
 	}
 	
-	function ofuscarEmail($email)
+	/** Ofuscar dirección de email.
+	 * @param $email dirección de email.
+	 * @param $hex ofuscar con caracteres hexadecimales.
+	 */
+	function ofuscarEmail($email, $hex=true)
 	{
+		if($hex){
+			return $this->hexentities($email);
+		}
 		return str_replace('@', '@<span style="display:none">null</span>', $email);
 	}
 	
+	/** Quitar tíldes y espacios a una cadena de texto, útil para urls.
+	 * @param $texto texto con tíldes y espacios.
+	 * @return texto sin tíldes ni espacios.
+	 */
 	function sinTildes($texto)
 	{
 		$texto = strtr($texto, 'áéíóúüñÁÉÍÓÚÜÑ ', 'aeiouunAEIOUUN_');
@@ -126,6 +171,13 @@ class GSWork
 		return $texto;
 	}
 	
+	/** frases para cantidades, útil para comentarios.
+	 * @param $var cantidad.
+	 * @param $cadena_cero frase si % es 0.
+	 * @param $cadena_uno frase si % es uno.
+	 * @param $cadena_mas frase si % es más.
+	 * @return frase
+	 */
 	function fraseNumerada($var, $cadena_cero, $cadena_uno, $cadena_mas)
 	{
 		if ($var == 0) {
@@ -140,6 +192,8 @@ class GSWork
 		return str_replace('%', $var, $rpta);
 	}
 	
+	/** URL de la página de inicio.
+	 */
 	function inicio()
 	{
 		if(ENLACES == 'C'){
@@ -148,12 +202,16 @@ class GSWork
 		return './';
 	}
 	
+	/** incluir página de la carpeta vista.
+	 * @param $p nombre de la página.
+	 * @param $idioma nombre de la carpeta de idioma.
+	 */
 	function verPagina($p, $idioma='')
 	{
 		$ruta = empty($idioma) ? "vista/$p.php" : "vista/$idioma/$p.php";
 
 		if(!file_exists("$ruta")){
-			$this->pagina404("La página: $p no existe");
+			$this->pagina404("La página: $p no existe.");
 		}
 		
 		$this->pagina_actual = $p;
@@ -161,12 +219,23 @@ class GSWork
 		include("$ruta");
 	}
 	
-	function pagina404($mensaje='',$redireccion='')
+	/** Mostrar página de error 404.
+	 * @param $mensaje mensaje de error.
+	 * @param $redireccion url de retorno.
+	 * @param $tiempo tiempo que se muestra en segundos.
+	 */
+	function pagina404($mensaje='',$redireccion='',$tiempo=2)
 	{
 		include('vista/404.php');
 		exit(0);
 	}
 
+	/** Crear enlace abreviado a la clase pagina y método ver.
+	 * 
+	 * @param $pagina nombre de la página.
+	 * @param $idioma id del idioma
+	 * @return enlace
+	 */
 	function enlacePagina($pagina, $idioma='')
 	{
 		if(!empty($idioma)){
@@ -324,92 +393,27 @@ class GSWork
 		return $pee;
 	}
 	
-	// manejo de imagenes
-	function CrearFoto($url, $ext, $newnombre=NULL, $w=0, $h=0)
-	{
-		if ($ext == "jpg" || $ext == "jpeg")
-			$imagen = @imagecreatefromjpeg($url);
-		else if ($ext == "png")
-			$imagen = @imagecreatefrompng($url);
-		else if ($ext == 'gif')
-			$imagen = @imagecreatefromgif($url);
-		else
-			return false;
-
-		if (!$imagen)
-			return false;
-
-		$ancho = @imagesx($imagen);
-		$alto = @imagesy($imagen);
-		if ($w == 0 && $h == 0) {
-			$w = $ancho;
-			$h = $alto;
-		}
-
-		$inix = 0;
-		$iniy = 0;
-		$dx = $ancho;
-		$dy = $alto;
-
-		if ($h == 0 && $w > 0)
-			$h = $w * ($alto / $ancho);
-		else if ($w == 0 && $h > 0)
-			$w = $h * ($ancho / $alto);
-		else {
-			$tmp = $h * $ancho / $w;
-			$inix = 0;
-			$iniy = ($alto - $tmp) / 2;
-			$dx = $ancho;
-			$dy = $tmp;
-			if ($tmp > $alto) {
-				$tmp = $w * $alto / $h;
-				$inix = ($ancho - $tmp) / 2;
-				$iniy = 0;
-				$dx = $tmp;
-				$dy = $alto;
-			}
-		}
-
-		$img = @imagecreatetruecolor($w, $h);
-		@imagecopyresampled($img, $imagen, 0, 0, $inix, $iniy, $w, $h, $dx, $dy);
-		if ($newnombre == NULL
-			)header("Content-type: image/jpeg");
-		$result = @imagejpeg($img, $newnombre, 90);
-		@imagedestroy($img);
-		return $result;
-	}
-
-	function AbrirFoto($archivo, $dir, $w, $h, $folder='thumbs/')
-	{
-		$w = empty($w) ? '0' : $w;
-		$h = empty($h) ? '0' : $h;
-		//$nombre = $folder.'/'.$id.'_'.$w.'x'.$h.'.jpg';
-		$pieza = str_replace($dir, '', $archivo);
-		$nombre = $folder . str_replace('.jpg', '', $pieza) . '_' . $w . 'x' . $h . '.jpg';
-		//if(!file_exists($nombre)) CrearFoto($archivo,$nombre,$w,$h);
-		if (!file_exists($nombre) /* || (filemtime($archivo) > filemtime($nombre)) */) {
-			$this->CrearFoto($archivo, 'jpg', $nombre, $w, $h);
-		}
-		return $nombre;
-	}
-	
+	// abrir bloque de código html para plantillas
 	function abrirBloque($nombre)
 	{
 		array_push($this->bloques_nombres,"$nombre");
 		ob_start();
-}
+	}
 	
+	// cerrar bloque de código html para plantillas
 	function cerrarBloque()
 	{
 		$nombre = array_pop($this->bloques_nombres);
 		$this->bloques["$nombre"] = ob_get_clean();
 	}
 	
+	// mostrar bloque
 	function bloque($nombre)
 	{
 		echo $this->bloques["$nombre"];
 	}
 	
+	// crear cadena json a partir de un array y terminar script
 	function die_json_encode($array_vars)
 	{
 		$json = new stdClass();
@@ -418,11 +422,6 @@ class GSWork
 		}
 		die(json_encode($json));
 	}
-	
-//	protected function cargarModelo($nombre){
-//		require_once 'modelos/$nombre.php';
-//		return new $nombre();
-//	}
 	
 	function nav_pag($pre_enlace,$nro_paginas,$pag_actual)
 	{	
@@ -458,7 +457,7 @@ class GSWork
 		<?
 	}
 	
-	
+	// convertir cadena a caracteres hexadecimales
 	function hexentities($str)
 	{
 		$return = '';
@@ -468,6 +467,7 @@ class GSWork
 		return $return;
 	}
 	
+	// enviar email
 	function email($nombres, $email, $to, $subject, $body)
 	{
 		$headers = 'MIME-Version: 1.0'.PHP_EOL;
@@ -480,24 +480,6 @@ class GSWork
 		}
 		return true;
 	}
-	
-//	function &loadlib($nombre){
-//		require 'inc/class.'.$nombre.'.php';
-//		$obj = new $nombre();
-//		return $obj;
-//	}
-	
-//	function &load($nombre){
-//		require 'inc/class.'.$nombre.'.php';
-//		//return call_user_func(array($nombre, 'getInstance'));
-//		$obj = new $nombre();
-//		return $obj;
-//	}
-//	
-//	function __autoload($classname){
-//		require 'inc/class.'.$classname.'.php';
-//	}
-	
 	
 } // fin de GSWork
 

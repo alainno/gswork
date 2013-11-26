@@ -1,1 +1,63 @@
-/* custom comoon styles */
+/* NO MODIFICAR */
+a{text-decoration:none;}
+a:active{outline:none}
+a:hover{outline:none;text-decoration:underline}
+.left{float:left}
+.right{float:right}
+.clearer{overflow:hidden;width:100%}
+.clearfix{zoom:1;}
+.clearfix:after{clear:both;content:"\0020";display:block;height:0;visibility:hidden}
+.mt5{margin-top:5px !important}
+.mt10{margin-top:10px !important}
+.mt15{margin-top:15px !important}
+.mt20{margin-top:20px !important}
+.ml5{margin-left:5px !important}
+.ml10{margin-left:10px !important}
+.ml15{margin-left:15px !important}
+.ml20{margin-left:20px !important}
+.tar{text-align:right}
+.tac{text-align:center}
+alignleft{display:inline;margin:0 10px 3px 0;float:left}
+alignright{display:inline;margin:0 0 3px 10px;float:right}
+aligncenter{display:block;margin-left:auto;margin-right:auto}
+.img-rpl{overflow:hidden;text-indent:100%;white-space:nowrap}
+.oculto{display:none}
+.mitad{width:47%}
+.ttu{text-transform:uppercase}
+.sombra{-webkit-box-shadow:0 0 3px #7a7a7a;-moz-box-shadow:0 0 3px #7a7a7a;-ms-box-shadow:0 0 3px #7a7a7a;-o-box-shadow:0 0 3px #7a7a7a;box-shadow:0 0 3px #7a7a7a}
+.curva{-webkit-border-radius:4px;-moz-border-radius:4px;-ms-border-radius:4px;-o-border-radius:4px;border-radius:4px}
+.curva-si{-webkit-border-top-left-radius:4px;-moz-border-top-left-radius:4px;-ms-border-top-left-radius:4px;-o-border-top-left-radius:4px;border-top-left-radius:4px}
+.curva-sd{-webkit-border-top-right-radius:4px;-moz-border-top-right-radius:4px;-ms-border-top-right-radius:4px;-o-border-top-right-radius:4px;border-top-right-radius:4px}
+.curva-ii{-webkit-border-bottom-left-radius:4px;-moz-border-bottom-left-radius:4px;-ms-border-bottom-left-radius:4px;-o-border-bottom-left-radius:4px;border-bottom-left-radius:4px}
+.curva-id{-webkit-border-bottom-right-radius:4px;-moz-border-bottom-right-radius:4px;-ms-border-bottom-right-radius:4px;-o-border-bottom-right-radius:4px;border-bottom-right-radius:4px}
+.curva-sup{-webkit-border-top-right-radius:4px;-moz-border-top-right-radius:4px;-ms-border-top-right-radius:4px;-o-border-top-right-radius:4px;border-top-right-radius:4px;-webkit-border-top-left-radius:4px;-moz-border-top-left-radius:4px;-ms-border-top-left-radius:4px;-o-border-top-left-radius:4px;border-top-left-radius:4px}
+.curva-inf{-webkit-border-bottom-left-radius:4px;-moz-border-bottom-left-radius:4px;-ms-border-bottom-left-radius:4px;-o-border-bottom-left-radius:4px;border-bottom-left-radius:4px;-webkit-border-bottom-right-radius:4px;-moz-border-bottom-right-radius:4px;-ms-border-bottom-right-radius:4px;-o-border-bottom-right-radius:4px;border-bottom-right-radius:4px}
+.curva-izq{-webkit-border-top-left-radius:4px;-moz-border-top-left-radius:4px;-ms-border-top-left-radius:4px;-o-border-top-left-radius:4px;border-top-left-radius:4px;-webkit-border-bottom-left-radius:4px;-moz-border-bottom-left-radius:4px;-ms-border-bottom-left-radius:4px;-o-border-bottom-left-radius:4px;border-bottom-left-radius:4px}
+.curva-der{-webkit-border-top-right-radius:4px;-moz-border-top-right-radius:4px;-ms-border-top-right-radius:4px;-o-border-top-right-radius:4px;border-top-right-radius:4px;-webkit-border-bottom-right-radius:4px;-moz-border-bottom-right-radius:4px;-ms-border-bottom-right-radius:4px;-o-border-bottom-right-radius:4px;border-bottom-right-radius:4px}
+.lh{margin:0;padding:0;}
+.lh li{display:inline-block;list-style:none;*display:inline;zoom:1}
+[class^="icono-"],[class*="icono-"]{display:inline-block;width:16px;height:16px;background:url("../img/sprite-iconos.png") no-repeat;line-height:16px;vertical-align:text-top;margin-top:-1px}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+:focus{outline:none}
+.boton{-webkit-border-radius:4px;-moz-border-radius:4px;-ms-border-radius:4px;-o-border-radius:4px;border-radius:4px;border:1px solid #ccc;border:none;-webkit-box-shadow:1px 1px 2px #535353;-moz-box-shadow:1px 1px 2px #535353;-ms-box-shadow:1px 1px 2px #535353;-o-box-shadow:1px 1px 2px #535353;box-shadow:1px 1px 2px #535353;display:inline-block;line-height:20px;padding:4px 12px;background-color:#19a6df;background-image:-webkit-linear-gradient(top,#19a6df 0%,#0a4aac 100%);background-image:-moz-linear-gradient(top,#19a6df 0%,#0a4aac 100%);background-image:-ms-linear-gradient(top,#19a6df 0%,#0a4aac 100%);background-image:-o-linear-gradient(top,#19a6df 0%,#0a4aac 100%);background-image:linear-gradient(top,#19a6df 0%,#0a4aac 100%);font-weight:bold;color:#fff;cursor:pointer;vertical-align:middle;text-shadow:1px 1px 1px #444;}
+.boton:hover{text-decoration:none}
+.boton:active{position:relative;top:1px}
+.boton.disabled{background:#19a6df;-webkit-box-shadow:none;-moz-box-shadow:none;-ms-box-shadow:none;-o-box-shadow:none;box-shadow:none;cursor:default;text-shadow:none;}
+.boton.disabled:active{top:0}
+.boton-grande{-webkit-border-radius:6px;-moz-border-radius:6px;-ms-border-radius:6px;-o-border-radius:6px;border-radius:6px;padding:9px 26px;font-size:18px}
+.boton-naranja{background-color:#f0b13f;background-image:-webkit-linear-gradient(top,#f0b13f 0%,#ce411b 100%);background-image:-moz-linear-gradient(top,#f0b13f 0%,#ce411b 100%);background-image:-ms-linear-gradient(top,#f0b13f 0%,#ce411b 100%);background-image:-o-linear-gradient(top,#f0b13f 0%,#ce411b 100%);background-image:linear-gradient(top,#f0b13f 0%,#ce411b 100%)}
+
+/* MODIFICAR A PARTIR DE AQUI */
+body{background:#ccc;font:14px "Lucida Grande",Helvetica,Arial,sans-serif;padding:15px 0}
+a{color:#00b7ff}
+.envoltura{margin:0 auto;width:960px;background:#fff;border:1px solid #c4c4c4;-webkit-box-shadow:0 0 2px 1px #bbb;-moz-box-shadow:0 0 2px 1px #bbb;-ms-box-shadow:0 0 2px 1px #bbb;-o-box-shadow:0 0 2px 1px #bbb;box-shadow:0 0 2px 1px #bbb}
+.header .arriba{height:80px;display:table;}
+.header .arriba .logo-container{display:table-cell;vertical-align:middle;}
+.header .arriba .logo-container .logo{display:block;margin-left:15px}
+.header .menu{padding:0 10px;height:36px;}
+.header .menu ul{margin:0;padding:0;background:#cdcdcd;height:100%;}
+.header .menu ul li{list-style:none;display:inline-block;margin:5px 0 0 5px;}
+.header .menu ul li a{color:#000;padding:0 20px;display:inline-block;height:26px;line-height:26px;text-decoration:none;}
+.header .menu ul li a:hover{background:#000;color:#fff}
+.cuerpo{padding:10px 15px}
+.footer{margin:0 10px;height:30px;line-height:30px;border-top:1px solid #cdcdcd;font-size:11px;color:#666}
